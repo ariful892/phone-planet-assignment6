@@ -22,10 +22,10 @@ const showSearchResult = phones => {
         <div class="card mx-3">
             <img  src="${phone.image}" class="card-img-top" alt="...">
             <div class="card-body">
-             <h5 class="card-title">Card title</h5>
-                 <p class="card-text">This is a longer card with supporting text below as a natural lead-in
-                to additional content. This content is a little bit longer.</p>
+             <h5 class="card-title">${phone.phone_name}</h5>
+                 <p class="card-text">${phone.brand}</p>
              </div>
+             <button type="button" class="btn btn-primary w-25 text-start ms-3 mb-3">Details</button>
         </div>`;
         searchResult.appendChild(div);
     }
