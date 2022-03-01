@@ -2,32 +2,56 @@ document.getElementById('search-btn').addEventListener('click', function () {
     const searchInput = document.getElementById('search-input');
     const searchText = searchInput.value;
 
+    //clear input feild
     searchInput.value = '';
-    const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
-    // console.log(url);
-    fetch(url)
-        .then(res => res.json())
-        .then(data => showSearchResult(data.data));
+
+    // if search feild is empty
+    if (searchText == '') {
+        document.getElementById('item-not-found').innerText = '';
+        const emptyField = document.getElementById('empty-feild');
+        emptyField.style.display = 'block';
+    }
+    //load phone data
+    else {
+        const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => showSearchResult(data.data));
+    }
 
 });
 
 const showSearchResult = phones => {
 
     const searchResult = document.getElementById('search-result');
-    for (const phone of phones) {
+    searchResult.textContent = '';
 
-        const div = document.createElement('div');
-        div.classList.add('col');
-        div.innerHTML = `
-        <div class="card mx-3">
-            <img  src="${phone.image}" class="card-img-top" alt="...">
-            <div class="card-body">
-             <h5 class="card-title">${phone.phone_name}</h5>
-                 <p class="card-text">${phone.brand}</p>
-             </div>
-             <button onclick="loadPhoneDetail('${phone.slug}')" type="button" class="btn btn-primary w-25 text-start ms-3 mb-3">Details</button>
-        </div>`;
-        searchResult.appendChild(div);
+    // if item is missing
+    if (phones.length == 0) {
+        document.getElementById('empty-feild').innerText = '';
+        const itemNotFound = document.getElementById('item-not-found');
+        itemNotFound.style.display = 'block';
+    }
+
+    //if item exist
+    else {
+        //removing not found message if it is exist
+        document.getElementById('item-not-found').style.display = 'none';
+
+        for (const phone of phones) {
+            const div = document.createElement('div');
+            div.classList.add('col');
+            div.innerHTML = `
+            <div class="card mx-3">
+                <img  src="${phone.image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                 <h5 class="card-title">${phone.phone_name}</h5>
+                     <p class="card-text">${phone.brand}</p>
+                 </div>
+                 <button onclick="loadPhoneDetail('${phone.slug}')" type="button" class="btn btn-primary w-25 text-start ms-3 mb-3">Details</button>
+            </div>`;
+            searchResult.appendChild(div);
+        }
     }
 }
 
@@ -41,12 +65,14 @@ const loadPhoneDetail = phoneId => {
 const showPhoneDetail = details => {
     console.log(details);
     const phoneDetails = document.getElementById('phone-details');
+    phoneDetails.textContent = '';
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
         <img src="${details.image}" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">${details.name}</h5>
+            
             <p class="card-text my-1">${details.releaseDate}</p>
             <p class="card-text my-1">${details.mainFeatures.memory}</p>
             <p class="card-text my-1">${details.mainFeatures.storage}</p>
