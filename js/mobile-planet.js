@@ -45,11 +45,11 @@ const showSearchResult = phones => {
     else {
         //removing not found message if it is exist
         document.getElementById('item-not-found').style.display = 'none';
+        document.getElementById('empty-feild').style.display = 'none';
+
 
         const totalItem = phones.length;
         if (totalItem > 20) {
-            const remainingItem = phones.slice(21, (totalItem - 20));
-            console.log(remainingItem);
             phones = phones.slice(0, 20);
         }
         for (const phone of phones) {
@@ -80,7 +80,7 @@ const loadPhoneDetail = phoneId => {
 
 // show phone details
 const showPhoneDetail = details => {
-    console.log(details);
+
     const phoneDetails = document.getElementById('phone-details');
     phoneDetails.textContent = '';
     const div = document.createElement('div');
@@ -114,8 +114,6 @@ const showPhoneDetail = details => {
         <p class="card-text my-1">${details.mainFeatures.sensors}</p>
         
     `;
-    console.log(details.others);
-
     // add phone others info
     if (details.hasOwnProperty('others')) {
         const div4 = document.createElement('div');
@@ -135,4 +133,5 @@ const showPhoneDetail = details => {
     div.appendChild(div2);
     div.appendChild(div3);
     phoneDetails.appendChild(div);
+    phoneDetails.style.backgroundColor = 'rgb(231, 231, 248);';
 };
