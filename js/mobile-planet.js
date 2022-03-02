@@ -127,6 +127,26 @@ const showPhoneDetail = details => {
         <p class="card-text my-1">${details.mainFeatures.sensors}</p>
         
     `;
+    console.log(details.others);
+    if (details.hasOwnProperty('others')) {
+        const div4 = document.createElement('div');
+
+        div4.innerHTML = `
+            <p class="card-text my-0">${details.others.WLAN}</p>
+            <p class="card-text my-0">${details.others.Bluetooth}</p>
+            <p class="card-text my-0">${details.others.USB}</p>
+            <p class="card-text">${details.others.GPS}</p>
+            
+        `;
+        div3.appendChild(div4);
+    }
+    // else {
+    //     const div4 = document.createElement('div');
+    //     div4.innerHTML = `
+    //         <p class="card-text my-0">'Ohters information nit available'</p>
+    //     `;
+    //     div3.appendChild(div4);
+    // }
 
     div.appendChild(div2);
     div.appendChild(div3);
