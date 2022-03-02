@@ -26,6 +26,9 @@ const showSearchResult = phones => {
     const searchResult = document.getElementById('search-result');
     searchResult.textContent = '';
 
+    const phoneDetails = document.getElementById('phone-details');
+    phoneDetails.textContent = '';
+
     // if item is missing
     if (phones.length == 0) {
         document.getElementById('empty-feild').innerText = '';
@@ -33,22 +36,27 @@ const showSearchResult = phones => {
         itemNotFound.style.display = 'block';
     }
 
+
     //if item exist
     else {
         //removing not found message if it is exist
         document.getElementById('item-not-found').style.display = 'none';
 
+        console.log(phones);
+        if (phones.length > 20) {
+            phones = phones.slice(0, 20);
+        }
         for (const phone of phones) {
             const div = document.createElement('div');
             div.classList.add('col');
             div.innerHTML = `
-            <div class="card mx-3">
-                <img  src="${phone.image}" class="card-img-top" alt="...">
+            <div class="card mx-3 text-center">
+                <img  src="${phone.image}" class="card-img-top img-fluid w-75 mx-auto" alt="...">
                 <div class="card-body">
-                 <h5 class="card-title">${phone.phone_name}</h5>
-                     <p class="card-text">${phone.brand}</p>
+                 <h5 class="card-title ">${phone.phone_name}</h5>
+                     <p class="card-text ">${phone.brand}</p>
                  </div>
-                 <button onclick="loadPhoneDetail('${phone.slug}')" type="button" class="btn btn-primary w-25 text-start ms-3 mb-3">Details</button>
+                 <button onclick="loadPhoneDetail('${phone.slug}')" type="button" class="btn btn-primary w-50 mx-auto mb-3">Details</button>
             </div>`;
             searchResult.appendChild(div);
         }
@@ -62,6 +70,28 @@ const loadPhoneDetail = phoneId => {
         .then(data => showPhoneDetail(data.data));
 }
 
+// const showPhoneDetail = details => {
+//     console.log(details);
+//     const phoneDetails = document.getElementById('phone-details');
+//     phoneDetails.textContent = '';
+//     const div = document.createElement('div');
+//     div.classList.add('card');
+//     div.innerHTML = `
+//         <img src="${details.image}" class="card-img-top w-50 img-fluid mx-auto mt-3" alt="...">
+//         <div class="card-body text-center">
+//             <h5 class="card-title">${details.name}</h5>
+
+//             <p class="card-text my-1">${details.releaseDate}</p>
+//             <p class="card-text my-1">${details.mainFeatures.memory}</p>
+//             <p class="card-text my-1">${details.mainFeatures.storage}</p>
+//             <p class="card-text my-1">${details.mainFeatures.displaySize}</p>
+//             <p class="card-text my-1">${details.mainFeatures.chipSet}</p>
+
+//         </div>
+//     `;
+//     phoneDetails.appendChild(div);
+// }
+
 const showPhoneDetail = details => {
     console.log(details);
     const phoneDetails = document.getElementById('phone-details');
@@ -69,17 +99,36 @@ const showPhoneDetail = details => {
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
-        <img src="${details.image}" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">${details.name}</h5>
-            
-            <p class="card-text my-1">${details.releaseDate}</p>
-            <p class="card-text my-1">${details.mainFeatures.memory}</p>
-            <p class="card-text my-1">${details.mainFeatures.storage}</p>
-            <p class="card-text my-1">${details.mainFeatures.displaySize}</p>
-            <p class="card-text my-1">${details.mainFeatures.chipSet}</p>
-            
-        </div>
+        <img src="${details.image}" class="card-img-top w-50 img-fluid mx-auto my-3" alt="...">`;
+    const div2 = document.createElement('div');
+    div2.innerHTML = `
+            <h5 class="card-title my-0">${details.name}</h5>
     `;
+    if (details.releaseDate.length != 0) {
+        const p = document.createElement('p');
+        p.innerHTML = `
+        ${details.releaseDate}
+        `;
+        div2.appendChild(p);
+    }
+    else {
+        const p = document.createElement('p');
+        p.innerText = 'No release date found';
+        div2.appendChild(p);
+    }
+
+    const div3 = document.createElement('div');
+    div3.classList.add('card-body');
+    div3.innerHTML = `
+        <p class="card-text my-0">${details.mainFeatures.memory}</p>
+        <p class="card-text my-1">${details.mainFeatures.storage}</p>
+        <p class="card-text my-1">${details.mainFeatures.displaySize}</p>
+        <p class="card-text my-1">${details.mainFeatures.chipSet}</p>
+    `;
+
+    div.appendChild(div2);
+    div.appendChild(div3);
+
+
     phoneDetails.appendChild(div);
 }
