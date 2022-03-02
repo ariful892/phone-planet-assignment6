@@ -1,9 +1,14 @@
 .background{
     background-color: rgb(250, 246, 250);
 }
+
 #empty-feild{
     display: none;
 }
 #item-not-found{
     display: none;
 }
+.details-bg{
+    background-color: rgb(223, 223, 248);
+}
+

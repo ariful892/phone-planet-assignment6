@@ -7,7 +7,8 @@ document.getElementById('search-btn').addEventListener('click', function () {
 
     // if search feild is empty
     if (searchText == '') {
-        document.getElementById('item-not-found').textContent = '';
+        const itemNotFound = document.getElementById('item-not-found');
+        itemNotFound.style.display = 'none';
         const emptyField = document.getElementById('empty-feild');
         emptyField.style.display = 'block';
     }
@@ -21,29 +22,34 @@ document.getElementById('search-btn').addEventListener('click', function () {
 
 });
 
+//show search result
 const showSearchResult = phones => {
 
+    //remove previous search result if it is exist
     const searchResult = document.getElementById('search-result');
     searchResult.textContent = '';
 
+    //remove previous detailed item if it is exist
     const phoneDetails = document.getElementById('phone-details');
     phoneDetails.textContent = '';
 
     // if item is missing
     if (phones.length == 0) {
-        document.getElementById('empty-feild').textContent = '';
+        const emptyField = document.getElementById('empty-feild');
+        emptyField.style.display = 'none';
         const itemNotFound = document.getElementById('item-not-found');
         itemNotFound.style.display = 'block';
     }
-
 
     //if item exist
     else {
         //removing not found message if it is exist
         document.getElementById('item-not-found').style.display = 'none';
 
-        // console.log(phones);
-        if (phones.length > 20) {
+        const totalItem = phones.length;
+        if (totalItem > 20) {
+            const remainingItem = phones.slice(21, (totalItem - 20));
+            console.log(remainingItem);
             phones = phones.slice(0, 20);
         }
         for (const phone of phones) {
@@ -63,35 +69,16 @@ const showSearchResult = phones => {
     }
 }
 
+// load phone details
 const loadPhoneDetail = phoneId => {
     const url = `https://openapi.programming-hero.com/api/phone/${phoneId}`;
     fetch(url)
         .then(res => res.json())
         .then(data => showPhoneDetail(data.data));
-}
+};
 
-// const showPhoneDetail = details => {
-//     console.log(details);
-//     const phoneDetails = document.getElementById('phone-details');
-//     phoneDetails.textContent = '';
-//     const div = document.createElement('div');
-//     div.classList.add('card');
-//     div.innerHTML = `
-//         <img src="${details.image}" class="card-img-top w-50 img-fluid mx-auto mt-3" alt="...">
-//         <div class="card-body text-center">
-//             <h5 class="card-title">${details.name}</h5>
 
-//             <p class="card-text my-1">${details.releaseDate}</p>
-//             <p class="card-text my-1">${details.mainFeatures.memory}</p>
-//             <p class="card-text my-1">${details.mainFeatures.storage}</p>
-//             <p class="card-text my-1">${details.mainFeatures.displaySize}</p>
-//             <p class="card-text my-1">${details.mainFeatures.chipSet}</p>
-
-//         </div>
-//     `;
-//     phoneDetails.appendChild(div);
-// }
-
+// show phone details
 const showPhoneDetail = details => {
     console.log(details);
     const phoneDetails = document.getElementById('phone-details');
@@ -128,29 +115,24 @@ const showPhoneDetail = details => {
         
     `;
     console.log(details.others);
+
+    // add phone others info
     if (details.hasOwnProperty('others')) {
         const div4 = document.createElement('div');
 
         div4.innerHTML = `
             <p class="card-text my-0">${details.others.WLAN}</p>
-            <p class="card-text my-0">${details.others.Bluetooth}</p>
+            <p class="card-text my-0"> ${details.others.Bluetooth}</p>
             <p class="card-text my-0">${details.others.USB}</p>
-            <p class="card-text">${details.others.GPS}</p>
+            <p class="card-text my-0">GPS - ${details.others.GPS}</p>
+            <p class="card-text my-0">Radio - ${details.others.Radio}</p>
+            <p class="card-text">NFC - ${details.others.NFC}</p>
             
         `;
         div3.appendChild(div4);
     }
-    // else {
-    //     const div4 = document.createElement('div');
-    //     div4.innerHTML = `
-    //         <p class="card-text my-0">'Ohters information nit available'</p>
-    //     `;
-    //     div3.appendChild(div4);
-    // }
 
     div.appendChild(div2);
     div.appendChild(div3);
-
-
     phoneDetails.appendChild(div);
-}
+};
