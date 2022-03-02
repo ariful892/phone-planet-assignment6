@@ -7,7 +7,7 @@ document.getElementById('search-btn').addEventListener('click', function () {
 
     // if search feild is empty
     if (searchText == '') {
-        document.getElementById('item-not-found').innerText = '';
+        document.getElementById('item-not-found').textContent = '';
         const emptyField = document.getElementById('empty-feild');
         emptyField.style.display = 'block';
     }
@@ -31,7 +31,7 @@ const showSearchResult = phones => {
 
     // if item is missing
     if (phones.length == 0) {
-        document.getElementById('empty-feild').innerText = '';
+        document.getElementById('empty-feild').textContent = '';
         const itemNotFound = document.getElementById('item-not-found');
         itemNotFound.style.display = 'block';
     }
@@ -42,7 +42,7 @@ const showSearchResult = phones => {
         //removing not found message if it is exist
         document.getElementById('item-not-found').style.display = 'none';
 
-        console.log(phones);
+        // console.log(phones);
         if (phones.length > 20) {
             phones = phones.slice(0, 20);
         }
@@ -124,6 +124,8 @@ const showPhoneDetail = details => {
         <p class="card-text my-1">${details.mainFeatures.storage}</p>
         <p class="card-text my-1">${details.mainFeatures.displaySize}</p>
         <p class="card-text my-1">${details.mainFeatures.chipSet}</p>
+        <p class="card-text my-1">${details.mainFeatures.sensors}</p>
+        
     `;
 
     div.appendChild(div2);
